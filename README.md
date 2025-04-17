@@ -1,7 +1,15 @@
-Alunos | USJT Mooca
+## Alunos | USJT Mooca
+- Rafaella Vasconcelos | 82410706
 - Nicolas Mendonça Lima | 824147637
+- ⁠Amanda Negri Calejan dos Santos | 824132077
+- Pedro Henrique da Silva Santos | 82417986
+- Renan Coqueiro Albuquerque | 824114679
+- Mayara Souza Lima | 824112619
+- ⁠Andrew Nunes Souza | 824148029
 
-# React + Vite
+
+
+## React + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
