@@ -1,5 +1,5 @@
 ## Alunos | USJT Mooca
-- Rafaella Vasconcelos | 82410706
+- Rafaella Ribeiro Vasconcellos | 82410706
 - Nicolas Mendonça Lima | 824147637
 - ⁠Amanda Negri Calejan dos Santos | 824132077
 - Pedro Henrique da Silva Santos | 82417986
