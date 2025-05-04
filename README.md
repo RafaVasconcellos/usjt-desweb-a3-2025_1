@@ -1,23 +1,50 @@
-## Alunos | USJT Mooca
-- Rafaella Ribeiro Vasconcellos | 82410706
-- Nicolas Mendonça Lima | 824147637
-- ⁠Amanda Negri Calejan dos Santos | 824132077
-- Pedro Henrique da Silva Santos | 82417986
-- Renan Coqueiro Albuquerque | 824114679
-- Mayara Souza Lima | 824112619
-- ⁠Andrew Nunes Souza | 824148029
+# TripBuddy · React + Vite
 
+Projeto desenvolvido como parte da disciplina de SDM/DWJ (2025) - USJT Mooca.
 
+## 👨‍💻 Integrantes do Grupo
 
-## React + Vite
+* Rafaella Ribeiro Vasconcellos — 82410706
+* Nicolas Mendonça Lima — 824147637
+* Amanda Negri Calejan dos Santos — 824132077
+* Pedro Henrique da Silva Santos — 82417986
+* Renan Coqueiro Albuquerque — 824114679
+* Mayara Souza Lima — 824112619
+* Andrew Nunes Souza — 824148029
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 🧭 Sobre o Projeto
 
-Currently, two official plugins are available:
+O **TripBuddy** é uma aplicação web que permite ao usuário gerar um roteiro de viagem personalizado com base em preferências preenchidas em um formulário simples e direto.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> 💡 Em breve, a aplicação contará com **integração com a API do Gemini** para geração de roteiros com IA, além da **comunicação com backend via `axios`**.
 
-## Expanding the ESLint configuration
+## 🎯 Funcionalidades:
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Formulário de planejamento de viagem (destino, datas, atividades, preferências)
+* Visualização do roteiro gerado com base nas entradas do usuário
+* Interface responsiva e moderna com Bootstrap
+* (Futuramente) Integração com IA Gemini para criação automática de roteiros
+* (Futuramente) Conexão com backend usando Axios
+
+## 🚀 Tecnologias Utilizadas
+
+* React
+* Vite
+* React Router DOM
+* Bootstrap
+* FontAwesome
+* **(Futuramente)** Axios
+* **(Futuramente)** API Gemini
+
+## 🛠️ Como rodar o projeto
+
+```bash
+# Instalar dependências
+npm install
+
+# Iniciar o servidor de desenvolvimento
+npm run dev
+```
+
+---
+
