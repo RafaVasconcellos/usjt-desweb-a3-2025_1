@@ -3,25 +3,18 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-// import formFrontSimulate from "./form-front-simulate.json";
 import { GoogleGenAI } from "@google/genai";
+
+import fs from "fs";
+const formFrontSimulate = JSON.parse(
+  fs.readFileSync("./form-front-simulate.json", "utf-8")
+);
 
 const app = express();
 app.use(express.json());
 
 app.post("/pergunte-ao-gemini", async (req, res) => {
   const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
-  // payload de teste
-  const formFrontSimulate = {
-    "destino": "Rio de Janeiro",
-    "ida": "23/05/2025 23:00",
-    "volta": "23/05/2025 23:00",
-    "orcamento": "R$ 400 - R$ 600",
-    "atividades": [ "restaurante", "praia", "balada" ],
-    "acompanhantes": "casal",
-    "preferencias": "Não gosto de lugares histórico"
-  }
 
   const {
     destino,
