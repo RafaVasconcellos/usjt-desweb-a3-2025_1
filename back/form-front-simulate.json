@@ -1,0 +1,9 @@
+{
+  "destino": "Rio de Janeiro",  
+  "ida": "23/05/2025 23:00",
+  "volta": "23/05/2025 23:00",
+  "orcamento": "R$ 400 - R$ 600",
+  "atividades": [ "restaurante", "praia", "balada" ],
+  "acompanhantes": "casal",
+  "preferencias": "Não gosto de lugares históricos"
+}
