@@ -3,18 +3,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
+import cors from 'cors' //para usar portar diferentes no dominio sem travar a interface, pois nosso back esta na porta 3000 e o front na 5173
 import { GoogleGenAI } from "@google/genai";
 
-import fs from "fs";
-const formFrontSimulate = JSON.parse(
-  fs.readFileSync("./form-front-simulate.json", "utf-8")
-);
-
 const app = express();
+app.use(cors(
+  {origin: "http://localhost:5173"}
+))
 app.use(express.json());
 
 app.post("/pergunte-ao-gemini", async (req, res) => {
-  const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+  const ai = new GoogleGenAI({apiKey: process.env.GEMINI_API_KEY});
 
   const {
     destino,
@@ -24,7 +23,7 @@ app.post("/pergunte-ao-gemini", async (req, res) => {
     atividades,
     acompanhantes,
     preferencias,
-  } = formFrontSimulate;
+  } = req.body; //tirei a simulação, agora estamos usando req.body
 
   const acompanhante = acompanhantes === 'sozinho' ? acompanhantes : `em ${acompanhantes}`;
   const preferencia = preferencias ? `Com as seguintes considerações: ${preferencias}.` : '';
@@ -34,12 +33,17 @@ app.post("/pergunte-ao-gemini", async (req, res) => {
   Para viajar ${acompanhante}. ${preferencia}
   Por favor retornar na versão de um diário, limitando as atividade para serem realizadas por dia, podendo ou não ter mais de uma atividade.`;
 
-  const response = await ai.models.generateContent({
-    model: "gemini-2.0-flash",
-    contents: prompt,
-  });
+  try {
+    const response = await ai.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
 
-  res.json(`Resposta: ${response.text}`);
+    res.json(response.text);
+  } catch (error) {
+    console.error('Erro ao gerar roteiro c/ gemini:', error);
+    res.status(500).json({error: 'Erro ao gerar roteiro com a IA.'});
+  }
 });
 
-app.listen(3000, () => console.log("ta rodando"));
+app.listen(3000, () => console.log("ta rodando na porta 3000"));

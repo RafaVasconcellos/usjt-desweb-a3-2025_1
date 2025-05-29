@@ -1,7 +1,7 @@
 // Importando React e o useState pra controlar o estado do form
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // pra poder redirecionar depois que o form for enviado
-
+import axiosClient from '../axiosClient';
 // Importando os componentes que montei separadinhos pra deixar o código mais limpo
 import Sidebar from '../components/Sidebar';
 import TextInput from '../components/fields/TextInput';
@@ -26,7 +26,7 @@ export default function RoteiroPage() {
   });
 
   // Essas aqui são as opções que vão aparecer nos inputs (radio, checkbox, select)
-  const orcamentos = ['R$ 400 – R$ 600', 'R$ 600 – R$ 700', 'R$ 700 – R$ 800'];
+  const orcamentos = ['R$ 400 - R$ 600', 'R$ 600 - R$ 700', 'R$ 700 - R$ 800'];
   const atividadesList = [
     'Museu','Praia','Balada',
     'Parque','Esporte','Trilha',
@@ -58,9 +58,17 @@ export default function RoteiroPage() {
   }
 
   // Quando o formulário for enviado, redireciona pra página de saída
-  function handleSubmit(e) {
+  function handleSubmit(e) { //e é o evento que lida com a função "enviar o formulario" 
     e.preventDefault();
-    navigate('/saida', { state: form }); // joga os dados do form via state
+
+    axiosClient.post('/pergunte-ao-gemini', form) //encaminha formulario com http pelo axios e post
+    .then((res) => { 
+      navigate('/saida', { state: {form, respostaIA: res.data} }); // joga os dados do form e a resposta via state
+    })
+    .catch((err) => {
+      console.error('Erro ao gerar roteiro:', err);
+      alert ('Erro ao gerar o roteiro. Tente novamente');
+    });
   }
 
   return (
@@ -176,7 +184,7 @@ export default function RoteiroPage() {
 
               {/* Botões no final do form */}
               <div className="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
-                <ActionButton text="Gerar roteiro" to="/saida" />
+                <ActionButton text="Gerar roteiro"/>
                 <ActionButton text="Voltar" to="/" />
               </div>
             </form>

@@ -8,7 +8,9 @@ import ActionButton from '../components/ActionButton';
 
 export default function SaidaPage() {
   // Aqui eu recupero os dados que foram passados do formulário anterior usando o useLocation
-  const { state: form } = useLocation();
+  const { state } = useLocation();
+  const form = state?.form || {}; // se state for null não da erro e sim fica vazio
+  const roteiro = state?.respostaIA || '—'; // garante que o roteiro sempre tenha um valor, mesmo que -
 
   // Faço uma desestruturação bem simples dos dados pra facilitar a leitura no JSX.
   // Coloco fallback com hífen (—) caso algum campo venha vazio, só pra garantir que não quebre.
@@ -53,11 +55,8 @@ export default function SaidaPage() {
                 whiteSpace: 'pre-wrap' // isso aqui faz com que quebras de linha (se tiver) sejam respeitadas
               }}
             >
-              {/* Mostro todos os dados coletados como se fosse a resposta de um planejamento automático */}
-              Seu roteiro para <strong>{destino}</strong> de <strong>{ida}</strong> a{' '}
-              <strong>{volta}</strong> com orçamento <strong>{orcamento}</strong> inclui:{' '}
-              <strong>{atividades}</strong>. Você viaja com <strong>{acompanhantes}</strong> e
-              prefere <strong>{preferencias}</strong>.
+              {/* Aqui é onde o pedro tinha feiro a simulação, eu apenas adicionei o roteiro*/}
+              {roteiro}
             </p>
           </div>
 
