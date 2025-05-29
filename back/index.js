@@ -3,7 +3,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express from "express";
-import cors from 'cors' //para usar portar diferentes no dominio sem travar a interface, pois nosso back esta na porta 3000 e o front na 5173
+//para usar portas diferentes no dominio sem travar a interface, pois nosso back esta na porta 3000 e o front na 5173
+import cors from 'cors'
+
 import { GoogleGenAI } from "@google/genai";
 
 const app = express();
