@@ -28,10 +28,38 @@ app.post("/pergunte-ao-gemini", async (req, res) => {
   const acompanhante = acompanhantes === 'sozinho' ? acompanhantes : `em ${acompanhantes}`;
   const preferencia = preferencias ? `Com as seguintes considerações: ${preferencias}.` : '';
 
-  const prompt = `Crie um roteiro de viagens para ${destino}, de ${ida} até ${volta}. Considerando um orçamento diário entre ${orcamento}.
-  Precisamos que inclua no roteiro atividades relacionadas a ${atividades.join(", ")}, além de outras sugestões para complementar o roteiro da viagem.
-  Para viajar ${acompanhante}. ${preferencia}
-  Por favor retornar na versão de um diário, limitando as atividade para serem realizadas por dia, podendo ou não ter mais de uma atividade.`;
+  const prompt = `
+  You are a travel itinerary expert, and your task is to create a detailed itinerary for a trip.
+  Use accessible and friendly language.
+
+  NEVER RESPOND WITH ANYTHING OUTSIDE THE CONTEXT OF TRAVEL, TOURISM, FUN, LEISURE, CULTURE, AND RELATED TOPICS.
+
+  HERE ARE IMPORTANT DETAILS FOR GENERATING THE ITINERARY:
+
+  Create a travel itinerary for ${destino}, from ${ida} to ${volta}. Considering a daily budget between ${orcamento}.
+  To include in the itinerary activities related to ${atividades.join(", ")}, along with other suggestions to complement the trip.
+  The trip will be with ${acompanhante}. ${preferencia}
+
+  Please return the response in the format of a travel journal.
+
+  ALL OF YOUR RESPONSE must be in NORMAL TEXT and in Portuguese!
+
+  ############
+  DO NOT USE THESE SPECIAL CHARACTERS:
+    NEVER USE ASTERISKS (*)!!!
+    DO NOT USE Hash symbols (#)
+  #############
+
+  After generating the itinerary, remove all the SPECIAL CHARECTERS! Then, return the itinerary in a format with the following structure: EXAMPLE:
+
+  Olá, futuro viajante solitário para Miami! Preparei um diário de bordo completo para sua aventura tropical, focando em praias incríveis e experiências que complementam o espírito vibrante da cidade. Seu orçamento diário de R$ 700 a R$ 800 (aproximadamente US$ 140-160, considerando a cotação atual) permitirá aproveitar bastante!
+
+  Diário de Bordo: Miami Solo Adventure (16/05/2025 - 30/05/2025)
+
+  Dia 1 (17/05/2025): Chegada e South Beach Vibe
+
+  Manhã: Chegada no Aeroporto Internacional de Miami (MIA). Pegue um transporte por aplicativo (Uber/Lyft) ou um táxi para seu hotel em South Beach. Sugestão de hotel: The Betsy South Beach (um pouco mais caro, mas com atmosfera sofisticada) ou Freehand Miami (mais econômico e com vibe jovem).
+  `;
 
   try {
     const response = await ai.models.generateContent({
