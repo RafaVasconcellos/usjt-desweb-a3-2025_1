@@ -10,6 +10,7 @@ import RadioGroup from '../components/fields/RadioGroup';
 import CheckboxGroup from '../components/fields/CheckboxGroup';
 import SelectField from '../components/fields/SelectField';
 import ActionButton from '../components/ActionButton';
+import Loading from '../components/Loading';
 
 export default function RoteiroPage() {
   const navigate = useNavigate(); // hook do React Router pra navegar entre páginas
@@ -24,6 +25,9 @@ export default function RoteiroPage() {
     acompanhantes: '',
     preferencias: ''
   });
+
+  // Esse state guarda a informação de carregamento do roteiro
+  const [loading, setLoading] = useState(false);
 
   // Essas aqui são as opções que vão aparecer nos inputs (radio, checkbox, select)
   const orcamentos = ['R$ 400 - R$ 600', 'R$ 600 - R$ 700', 'R$ 700 - R$ 800'];
@@ -60,15 +64,19 @@ export default function RoteiroPage() {
   // Quando o formulário for enviado, redireciona pra página de saída
   function handleSubmit(e) { //e é o evento que lida com a função "enviar o formulario" 
     e.preventDefault();
+    setLoading(true); // ativa loading
 
     axiosClient.post('/pergunte-ao-gemini', form) //encaminha formulario com http pelo axios e post
-    .then((res) => { 
+      .then((res) => {
       navigate('/saida', { state: {form, respostaIA: res.data} }); // joga os dados do form e a resposta via state
-    })
-    .catch((err) => {
-      console.error('Erro ao gerar roteiro:', err);
-      alert ('Erro ao gerar o roteiro. Tente novamente');
-    });
+      })
+      .catch((err) => {
+        console.error('Erro ao gerar roteiro:', err);
+        alert ('Erro ao gerar o roteiro. Tente novamente');
+      })
+      .finally(() => {
+        setLoading(false); // desativa o loading (só é chamado se o navigate falhar por algum motivo)
+      });
   }
 
   return (
@@ -107,87 +115,91 @@ export default function RoteiroPage() {
               </div>
             </div>
 
-            {/* O formulário mesmo */}
-            <form
-              onSubmit={handleSubmit}
-              className="bg-white p-4 rounded shadow-sm w-100"
-              style={{ maxWidth: 600 }}
-            >
-              {/* Destino */}
-              <TextInput
-                label="Destino:"
-                name="destino"
-                placeholder="Ex: Nova York (EUA)"
-                value={form.destino}
-                onChange={handleChange}
-                required
-              />
+            {/* exibe formulário ou loading dependendo da variável de estado */}
+            {loading ? (
+              <Loading />
+            ) : (
+              <form
+                onSubmit={handleSubmit}
+                className="bg-white p-4 rounded shadow-sm w-100"
+                style={{ maxWidth: 600 }}
+              >
+                {/* Destino */}
+                <TextInput
+                  label="Destino:"
+                  name="destino"
+                  placeholder="Ex: Nova York (EUA)"
+                  value={form.destino}
+                  onChange={handleChange}
+                  required
+                />
 
               {/* Datas de ida e volta em duas colunas */}
-              <div className="row g-3 mb-3">
-                <div className="col-md-6">
-                  <DateTimeField
-                    label="Ida:"
-                    name="ida"
-                    value={form.ida}
-                    onChange={handleChange}
-                    required
-                  />
+                <div className="row g-3 mb-3">
+                  <div className="col-md-6">
+                    <DateTimeField
+                      label="Ida:"
+                      name="ida"
+                      value={form.ida}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
+                  <div className="col-md-6">
+                    <DateTimeField
+                      label="Volta:"
+                      name="volta"
+                      value={form.volta}
+                      onChange={handleChange}
+                      required
+                    />
+                  </div>
                 </div>
-                <div className="col-md-6">
-                  <DateTimeField
-                    label="Volta:"
-                    name="volta"
-                    value={form.volta}
-                    onChange={handleChange}
-                    required
-                  />
-                </div>
-              </div>
 
               {/* Escolha do orçamento via radio */}
-              <RadioGroup
-                label="Orçamento:"
-                name="orcamento"
-                options={orcamentos}
-                value={form.orcamento}
-                onChange={handleChange}
-              />
+                <RadioGroup
+                  label="Orçamento:"
+                  name="orcamento"
+                  options={orcamentos}
+                  value={form.orcamento}
+                  onChange={handleChange}
+                />
 
               {/* Atividades via checkbox */}
-              <CheckboxGroup
-                label="Atividades da Viagem:"
-                name="atividades"
-                options={atividadesList}
-                selectedValues={form.atividades}
-                onChange={handleChange}
-              />
+                <CheckboxGroup
+                  label="Atividades da Viagem:"
+                  name="atividades"
+                  options={atividadesList}
+                  selectedValues={form.atividades}
+                  onChange={handleChange}
+                />
 
               {/* Select de acompanhantes */}
-              <SelectField
-                label="Você irá com:"
-                name="acompanhantes"
-                options={acompanhantesOpts}
-                value={form.acompanhantes}
-                onChange={handleChange}
-                required
-              />
+                <SelectField
+                  label="Você irá com:"
+                  name="acompanhantes"
+                  options={acompanhantesOpts}
+                  value={form.acompanhantes}
+                  onChange={handleChange}
+                  required
+                />
 
               {/* Campo opcional de preferências */}
-              <TextInput
-                label="Preferências (opcional):"
-                name="preferencias"
-                placeholder="Ex: Lugares vazios, Comidas Vegetarianas"
-                value={form.preferencias}
-                onChange={handleChange}
-              />
+                <TextInput
+                  label="Preferências (opcional):"
+                  name="preferencias"
+                  placeholder="Ex: Lugares vazios, Comidas Vegetarianas"
+                  value={form.preferencias}
+                  onChange={handleChange}
+                />
 
               {/* Botões no final do form */}
-              <div className="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
+                <div className="d-flex flex-column flex-md-row justify-content-center gap-3 mt-4">
                 <ActionButton text="Gerar roteiro"/>
-                <ActionButton text="Voltar" to="/" />
-              </div>
-            </form>
+                  <ActionButton text="Voltar" to="/" />
+                </div>
+              </form>
+            )}
           </div>
         </div>
       </div>
